@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import * as functions from '../src/functions'
+import * as functions from './src/functions'
 
-import data from '../src/services/datos'
+import data from './src/services/datos'
 const books = data.books
 const users = data.users
 const modules = data.modules

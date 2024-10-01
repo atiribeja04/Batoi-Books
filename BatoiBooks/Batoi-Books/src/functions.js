@@ -31,21 +31,23 @@ const booksWithStatus = (books, status) => {
 };
 
 const averagePriceOfBooks = (books) => {
+    if (books.length === 0) return '0.00 €';
     const total = books.reduce((acc, b) => acc + b.price, 0);
     const average = (total / books.length).toFixed(2);
     return `${average} €`;
 };
 
+
 const booksOfTypeNotes = (books) => {
-    return books.filter(b => b.type === 'notes');
+    return books.filter(b => b.publisher === 'Apunts');
 };
 
 const booksNotSold = (books) => {
-    return books.filter(b => !b.sold);
+    return books.filter(b => b.soldDate == "");
 };
 
 const incrementPriceOfbooks = (books, percentage) => {
-    return books.map(b => ({ ...b, price: (b.price * (1 + percentage)).toFixed(2) }));
+    return books.map(b => ({ ...b, price: parseFloat((b.price * (1 + percentage)).toFixed(1)) }));
 };
 
 const getUserById = (users, userId) => {
