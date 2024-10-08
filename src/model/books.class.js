@@ -1,5 +1,5 @@
 import Book from './book.class';
-
+const NOTES = 'Apunts'
 class Books {
     constructor() {
         this.data = [];
@@ -51,7 +51,7 @@ class Books {
     }
 
     booksOfTypeNotes() {
-        return this.data.filter(b => b.publisher === 'Apunts');
+        return this.data.filter(b => b.publisher === NOTES);
     }
 
     booksNotSold() {
