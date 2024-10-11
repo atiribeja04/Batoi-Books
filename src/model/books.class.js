@@ -1,12 +1,20 @@
 import Book from './book.class';
-const NOTES = 'Apunts'
+import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from './services/books.api';
+
+const NOTES = 'Apunts';
+
 class Books {
     constructor() {
         this.data = [];
     }
 
-    populate(array) {
-        this.data = array.map(valor => new Book(valor));
+    async populate() {
+        try {
+            const books = await getDBBooks();
+            this.data = books.map(valor => new Book(valor));
+        } catch (error) {
+            console.error('Error al poblar los libros:', error);
+        }
     }
 
     getBookById(bookId) {
@@ -24,16 +32,14 @@ class Books {
     bookExists(userId, moduleCode) {
         return this.data.some(b => b.userId === userId && b.moduleCode === moduleCode);
     }
-    
+
     booksFromUser(userId) {
         return this.data.filter(book => book.userId === userId);
     }
-    
 
     booksFromModule(moduleCode) {
         return this.data.filter(book => book.moduleCode === moduleCode);
     }
-    
 
     booksCheeperThan(price) {
         return this.data.filter(b => b.price <= price);
@@ -58,26 +64,35 @@ class Books {
         return this.data.filter(b => b.soldDate === "");
     }
 
-    incrementPriceOfbooks(valor) {
-        this.data = this.data.map(b => ({ ...b, price: parseFloat((b.price * (1 + valor)).toFixed(1)) }));
+    async addBook(bookData) {
+        try {
+            const newBook = await addDBBook(bookData);
+            this.data.push(new Book(newBook));
+            return newBook;
+        } catch (error) {
+            console.error('Error al añadir el libro:', error);
+        }
     }
 
-    addBook(bookData) {
-        const newId = this.data.length > 0 ? Math.max(...this.data.map(book => book.id)) + 1 : 1;
-        const newBook = new Book({ ...bookData, id: newId });
-        this.data.push(newBook);
-        return newBook;
+    async removeBook(id) {
+        try {
+            await removeDBBook(id);
+            const index = this.getBookIndexById(id);
+            this.data.splice(index, 1);
+        } catch (error) {
+            console.error('Error al eliminar el libro:', error);
+        }
     }
 
-    removeBook(id) {
-        const index = this.getBookIndexById(id);
-        this.data.splice(index, 1);
-    }
-
-    changeBook(bookData) {
-        const index = this.getBookIndexById(bookData.id);
-        this.data[index] = new Book(bookData);
-        return this.data[index]; // Retornar el libro modificado si es necesario
+    async changeBook(bookData) {
+        try {
+            const updatedBook = await changeDBBook(bookData);
+            const index = this.getBookIndexById(bookData.id);
+            this.data[index] = new Book(updatedBook);
+            return this.data[index];
+        } catch (error) {
+            console.error('Error al modificar el libro:', error);
+        }
     }
 
     toString() {
