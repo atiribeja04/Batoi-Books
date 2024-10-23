@@ -1,4 +1,4 @@
-const API_URL = `${process.env.VITE_URL_API}/modules`;
+const API_URL = import.meta.env.VITE_URL_API + '/modules';
 
 export const getDBModules = () => {
     return new Promise((resolver, rechazar) => {

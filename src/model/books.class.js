@@ -1,5 +1,5 @@
 import Book from './book.class';
-import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from './services/books.api';
+import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from '../services/books.api';
 
 const NOTES = 'Apunts';
 
@@ -97,6 +97,10 @@ class Books {
 
     toString() {
         return this.data.map(book => book.toString()).join('\n');
+    }
+
+    getAll() {
+        return this.data;
     }
 }
 

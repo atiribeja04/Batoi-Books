@@ -94,3 +94,25 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+nav {
+  margin: 20px 0;
+}
+
+#messages {
+  margin-bottom: 20px;
+}
+
+#list, #form, #about {
+  width: 80%; 
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+}

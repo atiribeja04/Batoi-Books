@@ -1,5 +1,5 @@
 import Module from './module.class';
-import { getDBModules, addDBModule, removeDBModule, changeDBModule } from './services/modules.api';
+import { getDBModules, addDBModule, removeDBModule, changeDBModule } from '../services/modules.api';
 
 class Modules {
     constructor() {
@@ -56,6 +56,11 @@ class Modules {
             console.error('Error al modificar el módulo:', error);
         }
     }
+
+    getAll() {
+        return this.data;
+    }
+    
 }
 
 export default Modules;

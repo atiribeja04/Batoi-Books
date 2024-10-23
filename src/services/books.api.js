@@ -1,4 +1,5 @@
-const API_URL = `${process.env.VITE_URL_API}/books`;
+const API_URL = import.meta.env.VITE_URL_API + '/books';
+
 
 export const getDBBooks = () => {
     return new Promise((resolver, rechazar) => {
