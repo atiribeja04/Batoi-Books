@@ -116,7 +116,7 @@ describe('Clase Users', () => {
   })
 
   test('changeUser lanza una excepción si un usuario no existe', async () => {
-    const user = new User(100, 'nick', 'email', 'pass')
+    const user = new User(1, 'nick', 'email', 'pass')
     await (expect(users.changeUser(user))).rejects.toThrowError()
   })
 
@@ -149,8 +149,8 @@ describe('Clase Users', () => {
     expect(response.id).toBe(3)
   });
   
-  test('getUserById 100 devuelve un error', async () => {
-    await expect(users.getUserById(100)).rejects.toThrowError()
+  test('getUserById 100 devuelve un error', () => {
+    expect(() => users.getUserById(100)).toThrowError()
   });
 
   test('getUserIndexById 7 devuelve la posición del usuario con id 7', () => {

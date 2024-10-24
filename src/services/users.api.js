@@ -1,100 +1,62 @@
-const API_URL = `${process.env.VITE_URL_API}/users`;
+const API_URL = 'http://localhost:3000/users';
 
-export const getDBUsers = () => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('GET', API_URL, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error obteniendo usuarios: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
-    });
+export const getDBUsers = async () => {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+        throw new Error(`Error obteniendo usuarios: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const getDBUser = (id) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('GET', `${API_URL}/${id}`, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error obteniendo usuario con id ${id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
-    });
+export const getDBUser = async (id) => {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) {
+        throw new Error(`Error obteniendo usuario con id ${id}: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const addDBUser = (user) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('POST', API_URL, true);
-        solicitud.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        solicitud.onload = function () {
-            if (solicitud.status === 201) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error añadiendo usuario: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send(JSON.stringify(user));
+export const addDBUser = async (user) => {
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
     });
+    if (!response.ok) {
+        throw new Error(`Error añadiendo usuario: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const removeDBUser = (id) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('DELETE', `${API_URL}/${id}`, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver();
-            } else {
-                rechazar(new Error(`Error eliminando usuario con id ${id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
+export const removeDBUser = async (id) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
     });
+    if (!response.ok) {
+        throw new Error(`Error eliminando usuario con id ${id}: ${response.status}`);
+    }
 };
 
-export const changeDBUser = (user) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('PUT', `${API_URL}/${user.id}`, true);
-        solicitud.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error modificando usuario con id ${user.id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send(JSON.stringify(user));
+export const changeDBUser = async (user) => {
+    const response = await fetch(`${API_URL}/${user.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
     });
+    if (!response.ok) {
+        throw new Error(`Error modificando usuario con id ${user.id}: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const changeDBUserPassword = (id, nuevaPassword) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('PATCH', `${API_URL}/${id}`, true);
-        solicitud.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error modificando contraseña de usuario con id ${id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send(JSON.stringify({ password: nuevaPassword }));
+export const changeDBUserPassword = async (id, nuevaPassword) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: nuevaPassword })
     });
+    if (!response.ok) {
+        throw new Error(`Error modificando contraseña de usuario con id ${id}: ${response.status}`);
+    }
+    return await response.json();
 };

@@ -1,9 +1,9 @@
 import Book from './book.class';
-import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from './services/books.api';
+import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from '../services/books.api';
 
 const NOTES = 'Apunts';
 
-class Books {
+export default class Books {
     constructor() {
         this.data = [];
     }
@@ -71,6 +71,7 @@ class Books {
             return newBook;
         } catch (error) {
             console.error('Error al añadir el libro:', error);
+            throw error;
         }
     }
 
@@ -81,6 +82,7 @@ class Books {
             this.data.splice(index, 1);
         } catch (error) {
             console.error('Error al eliminar el libro:', error);
+            throw error;
         }
     }
 
@@ -92,6 +94,7 @@ class Books {
             return this.data[index];
         } catch (error) {
             console.error('Error al modificar el libro:', error);
+            throw error;
         }
     }
 
@@ -99,5 +102,3 @@ class Books {
         return this.data.map(book => book.toString()).join('\n');
     }
 }
-
-export default Books;

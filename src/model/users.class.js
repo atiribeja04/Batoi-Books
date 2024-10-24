@@ -1,7 +1,7 @@
 import User from './user.class';
-import { getDBUsers, addDBUser, removeDBUser, changeDBUser, changeDBUserPassword } from './services/users.api';
+import { getDBUsers, addDBUser, removeDBUser, changeDBUser, changeDBUserPassword } from '../services/users.api';
 
-class Users {
+export default class Users {
     constructor() {
         this.data = [];
     }
@@ -44,6 +44,7 @@ class Users {
             return newUser;
         } catch (error) {
             console.error('Error al añadir el usuario:', error);
+            throw error;
         }
     }
 
@@ -54,6 +55,7 @@ class Users {
             this.data.splice(index, 1);
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
+            throw error;
         }
     }
 
@@ -65,6 +67,7 @@ class Users {
             return updatedUser;
         } catch (error) {
             console.error('Error al modificar el usuario:', error);
+            throw error;
         }
     }
 
@@ -75,6 +78,7 @@ class Users {
             user.password = newPassword; // Actualizamos la contraseña en la data local
         } catch (error) {
             console.error('Error al cambiar la contraseña del usuario:', error);
+            throw error;
         }
     }
 
@@ -89,4 +93,3 @@ class Users {
     }
 }
 
-export default Users;

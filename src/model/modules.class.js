@@ -1,7 +1,7 @@
 import Module from './module.class';
-import { getDBModules, addDBModule, removeDBModule, changeDBModule } from './services/modules.api';
+import { getDBModules, addDBModule, removeDBModule, changeDBModule } from '../services/modules.api';
 
-class Modules {
+export default class Modules {
     constructor() {
         this.data = [];
     }
@@ -12,6 +12,7 @@ class Modules {
             this.data = modules.map(m => new Module(m.code, m.cliteral, m.vliteral, m.courseId));
         } catch (error) {
             console.error('Error al poblar los módulos:', error);
+            throw error;
         }
     }
 
@@ -32,6 +33,7 @@ class Modules {
             return newModule;
         } catch (error) {
             console.error('Error al añadir el módulo:', error);
+            throw error;
         }
     }
 
@@ -43,6 +45,7 @@ class Modules {
             this.data.splice(index, 1);
         } catch (error) {
             console.error('Error al eliminar el módulo:', error);
+            throw error;
         }
     }
 
@@ -54,8 +57,8 @@ class Modules {
             this.data[index] = new Module(updatedModule.code, updatedModule.cliteral, updatedModule.vliteral, updatedModule.courseId);
         } catch (error) {
             console.error('Error al modificar el módulo:', error);
+            throw error;
         }
     }
 }
 
-export default Modules;

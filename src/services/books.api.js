@@ -1,83 +1,50 @@
-const API_URL = `${process.env.VITE_URL_API}/books`;
+const API_URL = 'http://localhost:3000/books'; // Cambia esto por la URL de tu API
 
-export const getDBBooks = () => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('GET', API_URL, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error obteniendo libros: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
-    });
+export const getDBBooks = async () => {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+        throw new Error(`Error obteniendo libros: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const getDBBook = (id) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('GET', `${API_URL}/${id}`, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error obteniendo libro con id ${id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
-    });
+export const getDBBook = async (id) => {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) {
+        throw new Error(`Error obteniendo libro con id ${id}: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const addDBBook = (book) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('POST', API_URL, true);
-        solicitud.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        solicitud.onload = function () {
-            if (solicitud.status === 201) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error añadiendo libro: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send(JSON.stringify(book));
+export const addDBBook = async (book) => {
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(book)
     });
+    if (!response.ok) {
+        throw new Error(`Error añadiendo libro: ${response.status}`);
+    }
+    return await response.json();
 };
 
-export const removeDBBook = (id) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('DELETE', `${API_URL}/${id}`, true);
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver();
-            } else {
-                rechazar(new Error(`Error eliminando libro con id ${id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send();
+export const removeDBBook = async (id) => {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
     });
+    if (!response.ok) {
+        throw new Error(`Error eliminando libro con id ${id}: ${response.status}`);
+    }
 };
 
-export const changeDBBook = (book) => {
-    return new Promise((resolver, rechazar) => {
-        const solicitud = new XMLHttpRequest();
-        solicitud.open('PUT', `${API_URL}/${book.id}`, true);
-        solicitud.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        solicitud.onload = function () {
-            if (solicitud.status === 200) {
-                resolver(JSON.parse(solicitud.responseText));
-            } else {
-                rechazar(new Error(`Error modificando libro con id ${book.id}: ${solicitud.status}`));
-            }
-        };
-        solicitud.onerror = () => rechazar(new Error('Error de red'));
-        solicitud.send(JSON.stringify(book));
+export const changeDBBook = async (book) => {
+    const response = await fetch(`${API_URL}/${book.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(book)
     });
+    if (!response.ok) {
+        throw new Error(`Error modificando libro con id ${book.id}: ${response.status}`);
+    }
+    return await response.json();
 };
